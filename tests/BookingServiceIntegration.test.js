@@ -28,7 +28,7 @@ afterAll(async () => {
     await db.close();
 });
 
-test("register a user", async () => {
+test("should register a user host", async () => {
     const testUser = {
         email: `test-${crypto.randomUUID()}@example.com`,
         password: "password123",
@@ -51,7 +51,51 @@ test("register a user", async () => {
     expect(body.role).toBe("HOST");
 });
 
-test("host can create a listing", async () => {
+test("should register a user guest", async () => {
+    const testUser = {
+        email: `test-${crypto.randomUUID()}@example.com`,
+        password: "password123",
+        role: "GUEST"
+    };
+
+    const response = await fetch(`${baseUrl}/api/auth/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(testUser)
+    });
+
+    expect(response.status).toBe(201);
+
+    const body = await response.json();
+
+    expect(body.email).toBe(testUser.email);
+    expect(body.role).toBe("GUEST");
+});
+
+test("should login user as guest",async()=>{
+    const guest=await registerGuest(baseUrl);
+
+    const token=await loginGuest(baseUrl,
+        guest.email,
+        guest.password);
+
+    expect(token).not.toBeNull();
+});
+
+
+test("should login user as host",async()=>{
+    const host=await registerHost(baseUrl);
+
+    const token=await loginHost(baseUrl,
+        host.email,
+        host.password);
+
+    expect(token).not.toBeNull();
+});
+
+test("should test host can create a listing", async () => {
     const host = await registerHost(baseUrl);
 
     const token = await loginHost(
@@ -84,7 +128,7 @@ test("host can create a listing", async () => {
     expect(body.pricePerNight).toBe(5000.00);
 });
 
-test("guest cannot create a listing", async () => {
+test("should test guest cannot create a listing", async () => {
     const guest = await registerGuest(baseUrl);
 
     const token = await loginGuest(
@@ -118,7 +162,7 @@ test("guest cannot create a listing", async () => {
     );
 });
 
-test("guest can create a booking", async () => {
+test("shoild test guest can create a booking", async () => {
     const guest = await registerGuest(baseUrl);
 
     const token = await loginGuest(
@@ -151,7 +195,7 @@ test("guest can create a booking", async () => {
     expect(body.listingId).toBe(listing.id);
 });
 
-test("host cannot create a booking", async () => {
+test("should test host cannot create a booking", async () => {
     const host = await registerHost(baseUrl);
 
     const token = await loginHost(
@@ -235,7 +279,57 @@ test("should not allow overlapping bookings on the same listing",async()=>{
         }
     );
 
-    const body=responseOverlap.json();
+    const body=await responseOverlap.json();
 
     expect(responseOverlap.status).toBe(409);
+    expect(body.error).toBe("Listing is already booked for the selected dates");
+});
+
+
+test("should update listing",async()=>{
+
+   const host=await registerHost(baseUrl);
+
+   const token=await loginHost(baseUrl,host.email,host.password);
+
+   //create new listin
+
+   const testListing = {
+        title: `Listing-${crypto.randomUUID()}`,
+        location: `Location-${crypto.randomUUID()}`,
+        description: `Description-${crypto.randomUUID()}`,
+        pricePerNight: 100
+    };
+
+    // Create listing as host
+    const response1= await fetch(`${baseUrl}/api/listings`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(testListing)
+    });
+
+   const listing=await response1.json();
+
+
+   const updatedListing={...listing,
+                         description:"Description changed"}
+ 
+   const response2= await fetch(`${baseUrl}/api/listings/${updatedListing.id}`,{
+                            method:"PUT",
+                            headers: {
+                                        "Content-Type": "application/json",
+                                        "Authorization": `Bearer ${token}`
+                                    },
+                            body: JSON.stringify(updatedListing)
+                        });
+
+   
+   const body=await response2.json();
+
+   expect(response2.status).toBe(200);
+   expect(body.description).toBe(updatedListing.description);
+
 });

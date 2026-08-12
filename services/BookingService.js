@@ -67,11 +67,11 @@ export default class BookingService{
         });
     }
 
-    async update(id, userId, data) {
+    async update(id, ownerId, data) {
         const booking = await Booking.findOne({
             where: {
                 id,
-                userId
+                ownerId
             }
         });
 

@@ -27,7 +27,7 @@ router.post("/listings",
 router.get("/listings/:id",
     controller.getById);
 
-router.put("/listings",
+router.put("/listings/:id",
     authenticate,
     hostOnly,
     validate(UpdateListingSchema),

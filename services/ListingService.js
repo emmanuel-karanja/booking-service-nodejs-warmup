@@ -26,11 +26,10 @@ export default class ListingService{
         return Listing.findAll();
     }
 
-    async update(id, userId, data) {
+    async update(id, ownerId, data) {
         const listing = await Listing.findOne({
             where: {
-                id,
-                userId
+                id
             }
         });
 
