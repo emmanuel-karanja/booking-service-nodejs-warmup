@@ -1,0 +1,43 @@
+import {Listing} from "../entities/index.js"
+
+import NotFoundError from "../errors/NotFoundError.js"
+
+export default class ListingService{
+
+    async create(data){
+       return Listing.create(data);
+    }
+
+    async getById(listingId) {
+        const listing = await Listing.findOne({
+            where: {
+                id: listingId
+            }
+        });
+
+        if (!listing) {
+            throw new NotFoundError("Listing not found");
+        }
+
+        return listing;
+    }
+
+    async getAll(){
+        return Listing.findAll();
+    }
+
+    async update(id, userId, data) {
+        const listing = await Listing.findOne({
+            where: {
+                id,
+                userId
+            }
+        });
+
+        if (!listing) {
+            throw new NotFoundError("Listing not found");
+        }
+
+        return listing.update(data);
+    }
+}
