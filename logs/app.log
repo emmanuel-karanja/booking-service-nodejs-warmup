@@ -119,3 +119,8 @@
 {"level":"info","message":"Server started","port":"8080","timestamp":"2026-08-12T09:27:44.600Z"}
 {"level":"info","message":"Server started","port":"8080","timestamp":"2026-08-12T09:27:55.183Z"}
 {"level":"info","message":"Server started","port":"8080","timestamp":"2026-08-12T09:28:05.291Z"}
+{"level":"info","message":"Server started","port":"8080","timestamp":"2026-08-12T09:49:40.271Z"}
+{"durationMs":20,"level":"info","message":"HTTP request","method":"POST","path":"/api/listings/1/bookings","statusCode":500,"timestamp":"2026-08-12T09:49:44.712Z"}
+{"level":"info","message":"Server started","port":"8080","timestamp":"2026-08-12T09:50:07.316Z"}
+{"level":"info","message":"Server started","port":"8080","timestamp":"2026-08-12T09:50:10.341Z"}
+{"durationMs":37,"level":"info","message":"HTTP request","method":"POST","path":"/api/listings/1/bookings","statusCode":500,"timestamp":"2026-08-12T09:50:15.172Z"}

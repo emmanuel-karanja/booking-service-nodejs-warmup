@@ -19,7 +19,7 @@ export default class BookingController{
 
         const listingService=new ListingService();
 
-        const listing=await listingService.getById(listing);
+        const listing=await listingService.getById(listingId);
 
         if(!listing){
             throw new NotFoundError("Cannot create a booking for a listing that doesn't exist.");
