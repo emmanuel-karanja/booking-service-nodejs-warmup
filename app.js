@@ -6,8 +6,6 @@ import userRoutes from "./routes/UserRoutes.js"
 import requestLogger  from "./middleware/LoggingMiddleware.js";
 import errorHandler  from "./middleware/GlobalErrorHandler.js";
 
-import "dotenv/config";
-
 import db from "./database.js"
 
 

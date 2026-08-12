@@ -1,8 +1,13 @@
 import Sequelize from "sequelize";
+import dotenv from "dotenv";
 
 const { Sequelize: SequelizeClass } = Sequelize;
 
-import "dotenv/config";
+dotenv.config({
+    path: process.env.NODE_ENV === "test"
+        ? ".env.test"
+        : ".env"
+});
 
 console.log({
     host: process.env.DB_HOST,
@@ -11,8 +16,6 @@ console.log({
     user: process.env.DB_USER,
     password: typeof process.env.DB_PASSWORD
 });
-
-
 
 const db = new SequelizeClass(
     process.env.DB_NAME,
@@ -26,7 +29,7 @@ const db = new SequelizeClass(
 );
 
 await db.authenticate();
-console.log("Database connected");
 
+console.log("Database connected");
 
 export default db;

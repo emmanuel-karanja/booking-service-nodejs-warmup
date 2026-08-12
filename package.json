@@ -4,11 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
+   "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
+   "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "start": "node server.js",
     "start:dev": "nodemon server.js",
     "migrate": "npx sequelize-cli db:migrate --config config/config.cjs",
+    "migrate:test":"NODE_ENV=test npx sequelize-cli db:migrate --config config/config.cjs",
     "rollback":"npx sequelize-cli db:migrate:undo --config config/config.cjs"
   },
   "keywords": [],

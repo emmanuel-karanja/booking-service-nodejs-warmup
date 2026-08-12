@@ -34,6 +34,11 @@ export default class Listing extends Model{
                 allowNull: false,
                 validate: {
                     min: 0
+                },
+                // Fixes the "5000" instead of 5000 issue for prices
+                get() {
+                    const value = this.getDataValue("pricePerNight");
+                    return value === null ? null : Number(value);
                 }
             }
         },

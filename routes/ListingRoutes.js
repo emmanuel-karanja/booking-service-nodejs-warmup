@@ -8,6 +8,8 @@ import authenticate from "../middleware/AuthMiddleware.js"
 
 import ListingService from "../services/ListingService.js"
 
+import {hostOnly} from "../middleware/AuthorizationMiddleware.js"
+
 const router=Router();
 
 
@@ -18,6 +20,7 @@ router.get("/listings",controller.getAll);
 
 router.post("/listings",
     authenticate,
+    hostOnly,
     validate(CreateListingSchema),
     controller.create);
 
@@ -26,6 +29,7 @@ router.get("/listings/:id",
 
 router.put("/listings",
     authenticate,
+    hostOnly,
     validate(UpdateListingSchema),
     controller.update);
 
