@@ -109,3 +109,16 @@ export function createRandomBooking() {
         checkOut: checkOut.toISOString().split("T")[0]
     };
 }
+
+export function getDateBetween(start, end) {
+    const startDate=new Date(start);
+    const endDate=new Date(end);
+
+    const startTime = startDate.getTime();
+    const endTime = endDate.getTime();
+
+    const randomTime =
+        startTime + Math.random() * (endTime - startTime);
+
+    return new Date(randomTime);
+}

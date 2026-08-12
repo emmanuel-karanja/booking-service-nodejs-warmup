@@ -8,7 +8,8 @@ import {
     loginGuest,
     loginHost,
     createRandomListing,
-    createRandomBooking
+    createRandomBooking,
+    getDateBetween
 } from "./helpers.js";
 
 let server;
@@ -184,4 +185,57 @@ test("host cannot create a booking", async () => {
     expect(body.error).toBe(
         "Action can only be performed by a Guest user type."
     );
+});
+
+
+test("should not allow overlapping bookings on the same listing",async()=>{
+   const guest = await registerGuest(baseUrl);
+
+    const token = await loginGuest(
+        baseUrl,
+        guest.email,
+        guest.password
+    );
+
+    const listing = await createRandomListing(baseUrl);
+
+    const testBooking1=createRandomBooking();
+
+    const checkInOverlap=getDateBetween(testBooking1.checkIn,testBooking1.checkOut);
+    const date= new Date(checkInOverlap);
+
+    const checkOut=date.setDate(date.getDate() + 5);
+
+    const testBooking2={
+        checkIn:checkInOverlap,
+        checkOut:checkOut
+    }
+
+    const response = await fetch(
+        `${baseUrl}/api/listings/${listing.id}/bookings`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(testBooking1)
+        }
+    );
+
+    const responseOverlap= await fetch(
+        `${baseUrl}/api/listings/${listing.id}/bookings`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(testBooking2)
+        }
+    );
+
+    const body=responseOverlap.json();
+
+    expect(responseOverlap.status).toBe(409);
 });
