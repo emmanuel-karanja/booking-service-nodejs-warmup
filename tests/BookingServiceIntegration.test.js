@@ -9,7 +9,7 @@ import {
     loginHost,
     createRandomListing,
     createRandomBooking,
-    getDateBetween
+    getRandomDateBetween
 } from "./helpers.js";
 
 let server;
@@ -19,6 +19,8 @@ beforeAll(async () => {
     server = app.listen(0);
 
     const { port } = server.address();
+
+    // Test can assign any port to the server
     baseUrl = `http://localhost:${port}`;
 });
 
@@ -50,6 +52,51 @@ test("should register a user host", async () => {
     expect(body.email).toBe(testUser.email);
     expect(body.role).toBe("HOST");
 });
+
+test("should fail registration if email is invalid",async()=>{
+
+    const invalidUser={
+        email:"emmanuel",
+        password:"password12#",
+        role:"HOST"
+    }
+
+    const response = await fetch(`${baseUrl}/api/auth/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(invalidUser)
+    });
+
+    const body=await response.json();
+
+    expect(response.status).toBe(400);
+    expect(body.errors[0].message).toBe("Invalid email address");
+});
+
+test("should fail registration if password is less than 8 chars",async()=>{
+
+    const invalidUser={
+        email:"emm@example.com",
+        password:"passwo",
+        role:"HOST"
+    }
+
+    const response = await fetch(`${baseUrl}/api/auth/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(invalidUser)
+    });
+
+    const body=await response.json();
+
+    expect(response.status).toBe(400);
+    expect(body.errors[0].message).toBe("Too small: expected string to have >=8 characters");
+});
+
 
 test("should register a user guest", async () => {
     const testUser = {
@@ -245,7 +292,7 @@ test("should not allow overlapping bookings on the same listing",async()=>{
 
     const testBooking1=createRandomBooking();
 
-    const checkInOverlap=getDateBetween(testBooking1.checkIn,testBooking1.checkOut);
+    const checkInOverlap=getRandomDateBetween(testBooking1.checkIn,testBooking1.checkOut);
     const date= new Date(checkInOverlap);
 
     const checkOut=date.setDate(date.getDate() + 5);

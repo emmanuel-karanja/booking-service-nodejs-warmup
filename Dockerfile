@@ -1,10 +1,10 @@
-FROM node:22
+FROM node:24
 
-WORKDIR /booking-service-nodejs
+WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN npm ci --verbose --no-progress
 
 COPY . .
 

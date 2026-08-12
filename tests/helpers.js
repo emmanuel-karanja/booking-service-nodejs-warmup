@@ -110,7 +110,7 @@ export function createRandomBooking() {
     };
 }
 
-export function getDateBetween(start, end) {
+export function getRandomDateBetween(start, end) {
     const startDate=new Date(start);
     const endDate=new Date(end);
 

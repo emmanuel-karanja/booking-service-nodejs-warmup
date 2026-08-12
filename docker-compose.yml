@@ -21,13 +21,11 @@ services:
     environment:
       NODE_ENV: development
       PORT: 3000
-
       DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: booking_app
       DB_USER: postgres
       DB_PASSWORD: postgres
-
       JWT_SECRET: development-secret
     ports:
       - "3000:3000"
