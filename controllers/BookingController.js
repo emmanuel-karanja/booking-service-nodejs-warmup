@@ -68,11 +68,10 @@ export default class BookingController{
         const ownerId=req.user.id;
         const bookings=await this.service.getAll(ownerId);
 
-        res.status(200).json(listings)
+        res.status(200).json(bookings)
 
         }catch(err){
             next(err)
         }
-
     } 
 }

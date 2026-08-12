@@ -12,6 +12,5 @@ export default function requestLogger(req,res,next){
             durationMs: Date.now() - start
         });
     });
-
-    next();  
+    next();
 }
