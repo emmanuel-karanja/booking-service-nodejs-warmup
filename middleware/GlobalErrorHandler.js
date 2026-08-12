@@ -1,8 +1,10 @@
 import NotFoundError from "../errors/NotFoundError.js"
 import UnauthorizedError from "../errors/UnauthorizedError.js"
+import ConflictError from "../errors/ConflictError.js"
 
 export default function errorHandler(err,req,res,next){
-    console.error(err);
+    console.log("headersSent:", res.headersSent);
+    console.log("error:", err);
 
     if(err instanceof NotFoundError){
         res.status(404).json({
@@ -16,7 +18,13 @@ export default function errorHandler(err,req,res,next){
         });
     }
 
-    res.status(500).json({
+    if(err instanceof ConflictError){
+        res.status(409).json({
+            error:err.message
+        });
+    }
+
+    return res.status(500).json({
         error: "Internal Server error"
     })
 }

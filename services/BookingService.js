@@ -4,6 +4,8 @@ import { Op } from "sequelize";
 
 import NotFoundError from "../errors/NotFoundError.js"
 
+import ConflictError from "../errors/ConflictError.js"
+
 export default class BookingService{
 
 

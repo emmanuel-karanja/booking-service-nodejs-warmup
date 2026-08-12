@@ -7,7 +7,7 @@ export default class BookingController{
 
         this.create=this.create.bind(this)
         this.update=this.update.bind(this)
-        this.getById=this.update.bind(this)
+        this.getById=this.getById.bind(this)
         this.getAll=this.getAll.bind(this)
     }
 
@@ -19,11 +19,6 @@ export default class BookingController{
 
         const listingService=new ListingService();
 
-        const listing=await listingService.getById(listingId);
-
-        if(!listing){
-            throw new NotFoundError("Cannot create a booking for a listing that doesn't exist.");
-        }
         
         const booking = await this.service.create({
             ...req.body,
@@ -79,7 +74,5 @@ export default class BookingController{
             next(err)
         }
 
-    }
-
-    
+    } 
 }
