@@ -1,7 +1,7 @@
 import winston from "winston";
 
 const logger = winston.createLogger({
-    level: "info",
+    level: "silly",   // We can change this to info if we need to. for prod
 
     format: winston.format.combine(
         winston.format.timestamp(),

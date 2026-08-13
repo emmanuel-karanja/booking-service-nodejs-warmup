@@ -114,11 +114,16 @@ export function getRandomDateBetween(start, end) {
     const startDate=new Date(start);
     const endDate=new Date(end);
 
-    const startTime = startDate.getTime();
-    const endTime = endDate.getTime();
 
-    const randomTime =
-        startTime + Math.random() * (endTime - startTime);
+    const DAY_AS_MILLIS=1000*60*60*24
+    const daysBetween=Math.floor((endDate-startDate)/DAY_AS_MILLIS);
 
-    return new Date(randomTime);
+    const randomDays=Math.floor(Math.random()*(daysBetween+1));
+
+    const newDate= new Date(startDate);
+
+    newDate.setDate(newDate.getDate()+randomDays);
+
+    return newDate;
+
 }

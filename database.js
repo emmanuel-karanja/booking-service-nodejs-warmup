@@ -1,5 +1,6 @@
 import Sequelize from "sequelize";
 import dotenv from "dotenv";
+import logger from "./logger.js";
 
 const { Sequelize: SequelizeClass } = Sequelize;
 
@@ -25,7 +26,8 @@ const db = new SequelizeClass(
     {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
-        dialect: "postgres"
+        dialect: "postgres",
+        logging: msg=>logger.info(msg)  // Channel logs through winston
     }
 );
 
