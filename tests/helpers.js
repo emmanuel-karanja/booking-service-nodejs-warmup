@@ -111,19 +111,17 @@ export function createRandomBooking() {
 }
 
 export function getRandomDateBetween(start, end) {
-    const startDate=new Date(start);
-    const endDate=new Date(end);
+    const startDate = new Date(start);
+    const endDate = new Date(end);
 
+    const daysBetween = Math.floor(
+        (endDate - startDate) / (1000 * 60 * 60 * 24)
+    );
 
-    const DAY_AS_MILLIS=1000*60*60*24
-    const daysBetween=Math.floor((endDate-startDate)/DAY_AS_MILLIS);
+    const randomDays = Math.floor(Math.random() * (daysBetween + 1));
 
-    const randomDays=Math.floor(Math.random()*(daysBetween+1));
+    const result = new Date(startDate);
+    result.setDate(result.getDate() + randomDays);
 
-    const newDate= new Date(startDate);
-
-    newDate.setDate(newDate.getDate()+randomDays);
-
-    return newDate;
-
+    return result;
 }
