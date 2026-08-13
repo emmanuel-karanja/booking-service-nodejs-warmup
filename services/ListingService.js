@@ -5,6 +5,7 @@ import NotFoundError from "../errors/NotFoundError.js"
 export default class ListingService{
 
     async create(data){
+        // Creation logic is a little too thin.
        return Listing.create(data);
     }
 

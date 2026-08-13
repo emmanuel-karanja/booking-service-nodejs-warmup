@@ -7,6 +7,7 @@ import UnauthorizedError from "../errors/UnauthorizedError.js"
 export default class UserService {
 
     async register(data) {
+        // Generate password hash
         const passwordHash = await bcrypt.hash(data.password, 12);
 
         const user = await User.create({
