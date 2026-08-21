@@ -4,19 +4,22 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-   "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
-   "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "start": "node server.js",
-    "start:dev": "nodemon server.js",
+    "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "start": "node --experimental-loader=@opentelemetry/instrumentation/hook.mjs --import ./instrumentation.js server.js",
+    "start:dev": "nodemon --experimental-loader=@opentelemetry/instrumentation/hook.mjs --import ./instrumentation.js server.js",
     "migrate": "npx sequelize-cli db:migrate --config config/config.cjs",
-    "migrate:test":"NODE_ENV=test npx sequelize-cli db:migrate --config config/config.cjs",
-    "rollback":"npx sequelize-cli db:migrate:undo --config config/config.cjs"
+    "migrate:test": "NODE_ENV=test npx sequelize-cli db:migrate --config config/config.cjs",
+    "rollback": "npx sequelize-cli db:migrate:undo --config config/config.cjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@opentelemetry/api": "^1.9.1",
+    "@opentelemetry/auto-instrumentations-node": "^0.79.0",
+    "@opentelemetry/sdk-node": "^0.221.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

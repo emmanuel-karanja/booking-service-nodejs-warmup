@@ -16,9 +16,16 @@ let server;
 let baseUrl;
 
 beforeAll(async () => {
+
+    // Assign a random port for testing.
     server = app.listen(0);
 
-    const { port } = server.address();
+    const address = server.address();
+
+    const {port}=address;
+
+    // Just wanted to see what was here: {family: IPv4 or IPv6, address::, port:random_port}
+    console.log("Address",address)
 
     // Test can assign any port to the server
     baseUrl = `http://localhost:${port}`;

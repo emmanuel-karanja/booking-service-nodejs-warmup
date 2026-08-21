@@ -23,8 +23,6 @@ export default function authenticate(req, res, next) {
         return next();
 
     } catch (err) {
-        return next(
-            new UnauthorizedError("Invalid or expired token")
-        );
+        return next(new UnauthorizedError("Invalid or expired token"));
     }
 }
